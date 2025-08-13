@@ -1,0 +1,23 @@
+server:
+    port: 8083
+spring:
+    data:
+        mongodb:
+            uri: mongodb+srv://sarkarsamrat16112004:samrat8145246849@cluster0.il1cawf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+            database: activity_db
+    rabbitmq:
+        host: localhost
+        port: 5672
+        username: guest
+        password: guest
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://localhost:8761/eureka/
+rabbitmq:
+    exchange:
+        name: fitness.exchange #remeber to add a exchange in RabbitMQ which is direct and durable
+    queue:
+        name: activity.queue
+    routing:
+        key: activity.track
