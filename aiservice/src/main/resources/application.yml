@@ -3,3 +3,7 @@ spring:
         name: aiservice
     config:
         import: optional:configserver:http://localhost:8888 #aiservice application.yml is loaded from http://localhost:8888/aiservice/default
+    data:
+        mongodb:
+            uri: ${MONGODB_URI}
+            database: activity_db

@@ -1,10 +1,6 @@
 server:
     port: 8082
 spring:
-    data:
-        mongodb:
-            uri: mongodb+srv://sarkarsamrat16112004:samrat8145246849@cluster0.il1cawf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
-            database: activity_db
     rabbitmq:
         host: localhost
         port: 5672

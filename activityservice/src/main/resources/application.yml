@@ -3,3 +3,7 @@ spring:
         name: activityservice
     config:
         import: optional:configserver:http://localhost:8888 #activityservice application.yml is loaded from http://localhost:8888/activityservice/default
+    data:
+        mongodb:
+            uri: ${MONGODB_URI}
+            database: activity_db
