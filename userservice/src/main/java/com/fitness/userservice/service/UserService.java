@@ -1,12 +1,16 @@
 package com.fitness.userservice.service;
 
+import com.fitness.userservice.config.JWTcookie;
 import com.fitness.userservice.dto.RegisterRequest;
 import com.fitness.userservice.dto.UserResponse;
 import com.fitness.userservice.model.User;
 import com.fitness.userservice.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import jakarta.servlet.http.Cookie;
 
 @Service
 @Slf4j
@@ -14,6 +18,9 @@ public class UserService {
 
     @Autowired
     private UserRepository repository;
+
+    @Autowired
+    private JWTcookie jwtCookie;
 
     public UserResponse register(RegisterRequest request) {
 
@@ -50,6 +57,45 @@ public class UserService {
         userResponse.setUpdatedAt(savedUser.getUpdatedAt());
 
         return userResponse;
+    }
+
+    public ResponseEntity<UserResponse> login(String email, String password) {
+        log.info("Login attempt for email: {}", email);
+        
+        // Check if user exists with this email
+        if (!repository.existsByEmail(email)) {
+            log.warn("Login failed: User not found with email: {}", email);
+            return ResponseEntity.status(401).build(); // Unauthorized
+        }
+        
+        // Get user by email
+        User user = repository.findByEmail(email);
+        
+        // Check if password matches
+        if (!user.getPassword().equals(password)) {
+            log.warn("Login failed: Invalid password for email: {}", email);
+            return ResponseEntity.status(401).build(); // Unauthorized
+        }
+        
+        log.info("Login successful for user: {}", user.getId());
+        
+        // Create JWT cookie
+        Cookie jwtCookie = this.jwtCookie.createCookie(user.getId());
+        
+        // Get user profile details
+        UserResponse userResponse = getUserProfile(user.getId());
+        
+        // Create response with cookie
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.SET_COOKIE, String.format("%s=%s; Path=%s; Max-Age=%d; HttpOnly; Secure", 
+            jwtCookie.getName(), 
+            jwtCookie.getValue(), 
+            jwtCookie.getPath(), 
+            jwtCookie.getMaxAge()));
+        
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(userResponse);
     }
 
     public UserResponse getUserProfile(String userId) {

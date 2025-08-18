@@ -1,5 +1,6 @@
 package com.fitness.userservice.controller;
 
+import com.fitness.userservice.dto.LoginRequest;
 import com.fitness.userservice.dto.RegisterRequest;
 import com.fitness.userservice.dto.UserResponse;
 import com.fitness.userservice.service.UserService;
@@ -22,6 +23,13 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<UserResponse> register(@Valid @RequestBody RegisterRequest request){
         return ResponseEntity.ok(userService.register(request));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserResponse> login(@Valid @RequestBody LoginRequest request){
+        String email = request.getEmail();
+        String password = request.getPassword();
+        return userService.login(email, password);
     }
 
 

@@ -1,8 +1,12 @@
 package com.fitness.activityservice.controller;
 
+import com.fitness.activityservice.config.JWTdecoder;
 import com.fitness.activityservice.dto.ActivityRequest;
 import com.fitness.activityservice.dto.ActivityResponse;
 import com.fitness.activityservice.service.ActivityService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.Cookie;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +21,24 @@ public class ActivityController {
     @Autowired
     private ActivityService activityService;
 
+    @Autowired
+    private JWTdecoder jwtDecoder;
+
     //add a new activity
     @PostMapping
-    public ResponseEntity<ActivityResponse> trackActivity(@RequestBody ActivityRequest request, @RequestHeader("X-User-ID") String userId){
-        if (userId != null) {
-            request.setUserId(userId);
+    public ResponseEntity<?> trackActivity(
+            @RequestBody ActivityRequest request,
+            HttpServletRequest httpRequest) {
+
+        Cookie[] cookies = httpRequest.getCookies();
+        
+        // decode using full Cookie object
+        String userId = jwtDecoder.decodeCookie(cookies);
+        if (userId == null) {
+            return ResponseEntity.status(401).body("Invalid or expired token");
         }
+
+        request.setUserId(userId);
         return ResponseEntity.ok(activityService.trackActivity(request));
     }
 
