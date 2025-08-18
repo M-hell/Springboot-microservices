@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/activities")
@@ -44,7 +43,14 @@ public class ActivityController {
 
     //get all activities for a user
     @GetMapping
-    public ResponseEntity<List<ActivityResponse>> getUserActivities(@RequestHeader("X-User-ID") String userId){
+    public ResponseEntity<?> getUserActivities(HttpServletRequest httpRequest){
+        Cookie[] cookies = httpRequest.getCookies();
+        
+        // decode using full Cookie object
+        String userId = jwtDecoder.decodeCookie(cookies);
+        if (userId == null) {
+            return ResponseEntity.status(401).body("Invalid or expired token");
+        }
         return ResponseEntity.ok(activityService.getUserActivities(userId));
     }
 
