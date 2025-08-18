@@ -18,6 +18,18 @@ spring:
                     uri: lb://AISERVICE
                     predicates:
                         - Path=/api/recommendations/**
+            globalcors:
+                corsConfigurations:
+                    '[/**]':
+                        allowedOrigins: "*"  #frontend URL
+                        allowedMethods:
+                            - GET
+                            - POST
+                            - PUT
+                            - DELETE
+                            - OPTIONS
+                        allowedHeaders: "*"
+                        allowCredentials: true
 
 server:
     port: 8080
