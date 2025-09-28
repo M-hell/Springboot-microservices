@@ -3,3 +3,15 @@ spring:
         name: userservice
     config:
         import: optional:configserver:http://localhost:8888 #userservice application.yml is loaded from http://localhost:8888/userservice/default
+    datasource:
+        url: ${NEONDB_URL}
+        username: neondb_owner
+        password: npg_m7PNqGHOxj6n
+        driver-class-name: org.postgresql.Driver
+    jpa:
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.PostgreSQLDialect
+        hibernate:
+            ddl-auto: update
+        show-sql: true
