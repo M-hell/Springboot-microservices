@@ -35,7 +35,7 @@ public class JWTcookie {
         // Create and return cookie
         Cookie cookie = new Cookie("token", token);
         cookie.setHttpOnly(true);
-        cookie.setSecure(true);
+        cookie.setSecure(false); // Set to false for HTTP (VM environment)
         cookie.setPath("/");
         cookie.setMaxAge(2 * 24 * 60 * 60); // 2 days in seconds
         

@@ -87,7 +87,7 @@ public class UserService {
         
         // Create response with cookie
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.SET_COOKIE, String.format("%s=%s; Path=%s; Max-Age=%d; HttpOnly; Secure", 
+        headers.add(HttpHeaders.SET_COOKIE, String.format("%s=%s; Path=%s; Max-Age=%d; HttpOnly; SameSite=Lax", 
             jwtCookie.getName(), 
             jwtCookie.getValue(), 
             jwtCookie.getPath(), 
