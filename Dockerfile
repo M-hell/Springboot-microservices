@@ -1,14 +1,19 @@
 FROM ubuntu:22.04
 
+# Avoid prompts during package installation
+ENV DEBIAN_FRONTEND=noninteractive
+
 # Install required packages
 RUN apt-get update && apt-get install -y \
     openjdk-17-jdk \
     maven \
-    nodejs \
-    npm \
     curl \
     docker.io \
     && rm -rf /var/lib/apt/lists/*
+
+# Install Node.js 18 (required for Next.js)
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs
 
 # Set JAVA_HOME
 ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
