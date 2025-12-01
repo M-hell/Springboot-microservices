@@ -19,7 +19,7 @@ export default function HomeLayout({ children }) {
     <div 
       className="min-h-screen text-white flex flex-col relative transition-all duration-300"
       style={{
-        backgroundImage: "url('/keepie.gif')",
+        backgroundImage: "url('/Keepie.gif')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",

@@ -50,7 +50,7 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased relative min-h-screen transition-all duration-200`}
         style={{
           fontFamily: 'var(--font-geist-sans)',
-          backgroundImage: "url('/keepie.gif')",
+          backgroundImage: "url('/Keepie.gif')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
